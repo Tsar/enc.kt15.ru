@@ -77,6 +77,7 @@ if (isset($_POST['inputText'])) {
                 } else {
                     file_put_contents('ip.txt', getClientIP());
                     file_put_contents('input.txt', $_POST['inputText']);
+                    file_put_contents('algo.txt', $generators[$g][0]);
 
                     exec($generators[$g][2]);
 
@@ -115,6 +116,8 @@ if (isset($_POST['inputText'])) {
         if (is_numeric($_GET['result']) && is_dir('solve/' . $_GET['result'])) {
             $reportName = 'solve/' . $_GET['result'] . '/output.txt';
             if (file_exists($reportName)) {
+                echo '<p><b>Алгоритм: ' . file_get_contents('solve/' . $_GET['result'] . '/algo.txt') . '</b></p>';
+                echo '<p><b>Кодируемая фраза: ' . file_get_contents('solve/' . $_GET['result'] . '/input.txt') . '</b></p>';
                 echo file_get_contents($reportName);
             } else {
                 echo "<p>Результаты не готовы. Понажимайте F5, пока что...</p>";
