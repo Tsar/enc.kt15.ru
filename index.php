@@ -2,10 +2,10 @@
 
 // (!!!) Генераторы должны брать кодируемую фразу их файла input.txt в текущей папке и создавать output.txt с html-таблицей
 
-//          id                    название                         массив файлов                                   команда для запуска
-$generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman/haffmanIV'),          './haffmanIV');
-$generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma/PPMA_Launcher.class',
-                                                                         'generators/ppma/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
+//          id                    название                         массив файлов                                              команда для запуска
+$generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman/haffmanIV'),                     './haffmanIV');
+$generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
+                                                                         'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
 
 function showRedirectPage($fl)
 {

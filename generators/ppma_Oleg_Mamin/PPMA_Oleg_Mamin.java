@@ -13,7 +13,7 @@ public class PPMA_Oleg_Mamin {
 	PPMA_Oleg_Mamin(String fileName) {
 		try {
 			s = new Scanner(new BufferedInputStream(new FileInputStream(new File(fileName))), "UTF-8");
-			pw = new PrintWriter(new File("PPMA_Report.txt"), "UTF-8");
+			pw = new PrintWriter(new File("output.txt"), "UTF-8");
 		} catch (IOException e) {
 			System.err.println("Error on initializing PPMA");
 			e.printStackTrace();
