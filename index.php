@@ -3,7 +3,7 @@
 // (!!!) Генераторы должны брать кодируемую фразу их файла input.txt в текущей папке и создавать output.txt с html-таблицей
 
 //          id                    название                         массив файлов                                              команда для запуска
-$generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman_Ioann_Volkov/haffman'),          './haffman > output.txt');
+$generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman_Ioann_Volkov/haffman'),          'chmod +x haffman && ./haffman > output.txt');
 $generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
                                                                          'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
 
