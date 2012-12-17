@@ -7,6 +7,15 @@ $generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C+
 $generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
                                                                          'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
 
+foreach ($generators as $gen => $genArr) {
+    foreach ($genArr[1] as $fName) {
+        if (!file_exists($fName)) {
+            echo 'Fatal error: file "' . $fName . '" does not exist!';
+            exit();
+        }
+    }
+}
+
 function showRedirectPage($fl)
 {
 ?>
