@@ -1,5 +1,12 @@
 <?php
 
+// (!!!) Генераторы должны брать кодируемую фразу их файла input.txt в текущей папке и создавать output.txt с html-таблицей
+
+//          id                    название                         массив файлов                                   команда для запуска
+$generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman/haffmanIV'),          './haffmanIV');
+$generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma/PPMA_Launcher.class',
+                                                                         'generators/ppma/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
+
 function showRedirectPage($fl)
 {
 ?>
@@ -27,28 +34,47 @@ function getClientIP() {
     return $client_ip;
 }
 
-if (isset($_POST['ppmaInput']) && isset($_POST['ppmaSubmit'])) {
-    if (strlen($_POST['ppmaInput']) > 1000) {
-        echo "Max allowed input length is 1000.";
+if (isset($_POST['inputText'])) {
+    if (strlen($_POST['inputText']) > 1000) {
+        echo "Max allowed input text length is 1000.";
     } else {
 
-        $i = file_get_contents('solve/current.txt');
-        file_put_contents('solve/current.txt', $i + 1);
-        
-        $dir = 'solve/' . $i . '/';
-        if (!mkdir($dir)) {
-            echo "Fatal error happened, try again!";
+        $g = '';
+        foreach ($generators as $gen => $genArr) {
+            if (isset($_POST['submit' . $gen])) {
+                $g = $gen;
+                break;
+            }
+        }
+
+        if ($g === '') {
+            echo "Cool hacker?";
         } else {
-            copy('PPMA_Launcher.class',   $dir . 'PPMA_Launcher.class');
-            copy('PPMA_Oleg_Mamin.class', $dir . 'PPMA_Oleg_Mamin.class');
-            if (!chdir($dir)) {
+
+            $i = file_get_contents('solve/current.txt');
+            file_put_contents('solve/current.txt', $i + 1);
+            
+            $dir = 'solve/' . $i . '/';
+            if (!mkdir($dir)) {
                 echo "Fatal error happened, try again!";
             } else {
-                file_put_contents('ip.txt', getClientIP());
-                file_put_contents('PPMA_Input.txt', $_POST['ppmaInput']);
-                exec('java PPMA_Launcher');
-                showRedirectPage("/?result=" . $i);
+
+                foreach ($generators[$g][1] as $fName) {
+                    copy($fName, $dir . basename($fName));
+                }
+
+                if (!chdir($dir)) {
+                    echo "Fatal error happened, try again!";
+                } else {
+                    file_put_contents('ip.txt', getClientIP());
+                    file_put_contents('input.txt', $_POST['inputText']);
+
+                    exec($generators[$g][2]);
+
+                    showRedirectPage("/?result=" . $i);
+                }
             }
+        
         }
 
     }
@@ -58,11 +84,11 @@ if (isset($_POST['ppmaInput']) && isset($_POST['ppmaSubmit'])) {
 <head>
 <link rel="stylesheet" href="style.css" type="text/css" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>PPMA: генератор таблички для отчёта</title>
+<title>Теория информации: алгоритмы кодирования</title>
 </head>
 <body>
 
-<h1 align=center>PPMA: генератор таблички для отчёта</h1>
+<h1 align=center>Теория информации: алгоритмы кодирования</h1>
 
 <div id="wrap">
 
@@ -78,7 +104,7 @@ if (isset($_POST['ppmaInput']) && isset($_POST['ppmaSubmit'])) {
 <div id="content">
 <?php
         if (is_numeric($_GET['result']) && is_dir('solve/' . $_GET['result'])) {
-            $reportName = 'solve/' . $_GET['result'] . '/PPMA_Report.txt';
+            $reportName = 'solve/' . $_GET['result'] . '/output.txt';
             if (file_exists($reportName)) {
                 echo file_get_contents($reportName);
             } else {
@@ -100,25 +126,25 @@ if (isset($_POST['ppmaInput']) && isset($_POST['ppmaSubmit'])) {
 
 <div id="content">
 
-<p>Возможно, не все смогут разобраться и написать алгоритм генерации таблички для PPMA для третьего ДЗ по Кудряшову.<br />
-Даже потратив около пяти часов, кое-кто не смог. <b>Но Олег Мамин смог!</b><br /><br />
-Поэтому для больших лентяев есть возможность загнать свою последовательность символов в текстовое поле ниже и получить готовую табличку.</p>
-
 <form method="post" action="index.php">
     <table id="submitTable">
         <tr class="odd">            
-            <td>Кстати, а вот и текстовое поле:</td>
-            <td><input type="text" size="70" name="ppmaInput"></td>
+            <td>Кодируемая фраза:</td>
+            <td><input type="text" size="70" name="inputText"></td>
         </tr>
-        <tr class="even">
-            <td colspan="2"><center><input type="submit" name="ppmaSubmit" value="Кнопочка. Догадаетесь, для чего :)"></center></td>
+<?php
+        $i = 0;
+        foreach ($generators as $gen => $genArr) {
+?>
+        <tr class="<?php echo ($i % 2 == 0) ? 'even' : 'odd'; ?>">
+            <td colspan="2"><center><input type="submit" name="submit<?php echo $gen; ?>" value="<?php echo $genArr[0]; ?>"></center></td>
         </tr>
+<?php
+            ++$i;
+        }
+?>
     </table>
 </form>
-
-<p>P.S. 1. Если кто-то до сих пор не понял, почему здесь ведутся разговоры про Олега Мамина, поясняю: этот сайт запускает его реализацию алгоритма.<br />
-P.S. 2. Олег сказал: «там у меня тока считается не t_t(s) которое у него, а t_t'(s) которое он описывает на 152 стр в книжке».<br />
-P.S. 3. <b>Кириллица уже <u>поддерживается</u>;</b> скажем спасибо Коле за те 18 байт, которые он добавил в код :)</p>
 
 </div>
 
