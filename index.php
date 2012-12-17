@@ -4,6 +4,8 @@
 
 //          id                    название                         массив файлов                                              команда для запуска
 $generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman_Ioann_Volkov/haffman'),          'chmod +x haffman && ./haffman > output.txt');
+$generators['LZW_AE']     = array('LZW by Андрей Еремеев (java)',  array('generators/lzw_Andrei_Eremeev/LZW_Launcher.class',
+                                                                         'generators/lzw_Andrei_Eremeev/LZW.class'),          'java LZW_Launcher');
 $generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
                                                                          'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
 
