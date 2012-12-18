@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 from math import log, ceil
 
 log2 = lambda x: log(x) / log(2.0)
@@ -27,7 +29,7 @@ if __name__ == "__main__":
 
     codeLen = 0
     
-    print "<table><tr><th>Символы</th><th>Номер слова в словаре</th><th>Код</th>Длина всего кода</tr>"
+    print '<table id="infoTable"><tr><th>Символы</th><th>Номер слова в словаре</th><th>Код</th><th>Длина всего кода</th></tr>'
 
     while N < n:
         l_max = 0
