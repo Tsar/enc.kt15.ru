@@ -1,5 +1,7 @@
 #!/usr/bin/env python3.2
+# -*- coding: utf8 -*-
 
+import sys
 from collections import defaultdict
 from fractions import Fraction
 from decimal import Decimal
@@ -8,13 +10,16 @@ from math import ceil, log
 
 
 def arith(s):
+    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th></tr>')
     total = Fraction(1)
     tau = defaultdict(lambda: 0)
+    iii = 0
     for n,c in enumerate(s):
-        print('{0:<5}{1:<7}{2:<16}\sfrac{{{3}}}{{{4}}}'.format(n, c, tau[c], 2*tau[c]+1, 2*n+256))
+        print('<tr class="' + ('odd' if iii % 2 == 0 else 'even') + '"><td>{0}</td><td>{1}</td><td>{2}</td><td>{3} / {4}</td></tr>'.format(n, c, tau[c], 2*tau[c]+1, 2*n+256))
+        iii += 1
         total *= Fraction(2*tau[c]+1, 2*n+256)
         tau[c] += 1
-    print('Total bits: {}'.format(ceil(-log(total, 2))+1))
+    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(ceil(-log(total, 2))+1))
 
 
 ##############################################################
@@ -34,7 +39,8 @@ def binz(n, w):
     return '0'*(ceil(log(w,2))-len(b)) + b if w > 1 else ''
 
 def lz77(s):
-    frmt = '{:<25}{:<5}{:<9}{:<20}{}'
+    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th><th>п5</th></tr>')
+    frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     window = 0
     def find_closest(i):
         for j in range(i,len(s)+1):
@@ -48,42 +54,49 @@ def lz77(s):
 
     i = 0
     total = 0
+    iii = 0
     while i < len(s):
         d,l = find_closest(i)
         if l != 0:
             d_bin = binz(d, window)
             l_bin = elias(l)
             tl = 1 + len(d_bin) + len(l_bin)
-            print(frmt.format(s[i:i+l],
+            print(frmt.format('odd' if iii % 2 == 0 else 'even',
+                              s[i:i+l],
                               l,
                               '{}({})'.format(d,window),
                               '1 ' + d_bin + ' ' + l_bin,
                               tl))
+            iii += 1
             window += l
             i += l
         else:
             tl = 1 + 8
-            print(frmt.format(s[i],
+            print(frmt.format('odd' if iii % 2 == 0 else 'even',
+                              s[i],
                               l,
                               '-',
                               '0 bin({})'.format(s[i]),
                               tl))
+            iii += 1
             window += 1
             i += 1
         total += tl
-    print('Total bits: {}'.format(total))
+    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(total))
 
 
 ##########################################################
 
 
 def lz78(s):
-    frmt = '{:<15}{:<15}{:<20}{}'
+    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th></tr>')
+    frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     dic = ['']
 
     i = 0
     total = 0
     k = 0
+    iii = 0
     while i < len(s):
         prevk = k
         for j in range(i, len(s)+1):
@@ -94,10 +107,12 @@ def lz78(s):
         if k == 0:
             c = binz(k, len(dic))
             neww = dic[prevk] + s[i]
-            print(frmt.format(neww,
+            print(frmt.format('odd' if iii % 2 == 0 else 'even',
+                              neww,
                               k,
                               c + ' bin({})'.format(s[i+len(dic[k])]),
                               len(c)+8))
+            iii += 1
             dic.append(s[i])
             k = len(dic)-1
             i += 1
@@ -105,23 +120,26 @@ def lz78(s):
         else:
             c = binz(k, len(dic))
             neww = dic[prevk] + dic[k][0]
-            print(frmt.format(neww,
+            print(frmt.format('odd' if iii % 2 == 0 else 'even',
+                              neww,
                               k,
                               c,
                               len(c)))
+            iii += 1
             neww = dic[prevk] + dic[k][0]
             i += len(dic[k])
             total += len(c)
         if neww not in dic:
             dic.append(neww)
-    print('Total bits: {}'.format(total))
+    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(total))
 
 
 ##########################################################################
 
 
 def ppma(s, D=5):
-    frmt = '{:<10}{:<30}{:<20}{:<100}{}'
+    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th><th>п5</th></tr>')
+    frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     letters_left = 256
 
     def find_context(i):
@@ -160,12 +178,12 @@ def ppma(s, D=5):
             return ([sm] + taus, [Fraction(1, sm + 1)] + p_escs, p_a)
 
     def fracs(fs):
-        return '\cdot'.join(map(frac, fs))
+        return ' * '.join(map(frac, fs))
     def frac(f):
         if f.denominator == 1:
             return str(f.numerator)
         else:
-            return '\sfrac{{{}}}{{{}}}'.format(f.numerator, f.denominator)
+            return '{} / {}'.format(f.numerator, f.denominator)
 
     i = 0
     total = Decimal(0)
@@ -183,11 +201,36 @@ def ppma(s, D=5):
         fr2 = frac(p_a)
         if fr2:
             fr2 = '$'+fr2+'$'
-        print(frmt.format(hex(letter),
+        print(frmt.format('odd' if i % 2 == 0 else 'even',
+                          hex(letter),
                           context,
                           ';'.join(map(str,taus)),
                           fr1,
                           fr2))
         i += 1
         total += sum(map(lambda p: Decimal.from_float(-log(p, 2)), p_escs + [p_a]))
-    print('Total bits: {}'.format(ceil(total)+1))
+    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(ceil(total)+1))
+
+
+##########################################################################
+
+
+if __name__ == "__main__":
+    assert(len(sys.argv) == 2)
+
+    algo = sys.argv[1]
+    with open('input.txt', 'r') as f:
+        s = f.read()
+
+    print('<table id="infoTable">')
+
+    if algo == "arith":
+        arith(s)
+    elif algo == "lz77":
+        lz77(s)
+    elif algo == "lz78":
+        lz78(s)
+    elif algo == "ppma":
+        ppma(s)
+
+    print('</table>')
