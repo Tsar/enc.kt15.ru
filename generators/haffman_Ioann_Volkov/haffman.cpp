@@ -62,6 +62,8 @@ int main() {
         v.push(V(((double)it->second) / s.length(), it->first));
     }
 
+    bool onlyOneChar = (v.size() == 1);
+
     while (v.size() > 1) {
         V* s1 = new V(v.top());
         v.pop();
@@ -73,7 +75,7 @@ int main() {
     std::cout << "<table id=\"infoTable\">" << std::endl << "<tr><th>Char</th><th>Code</th><th>Current length</th></tr>" << std::endl;
 
     std::map<char, std::string> codes;
-    buildCodes(&v.top(), codes);
+    buildCodes(&v.top(), codes, onlyOneChar ? "0" : "");
     std::string completeCode = "";
     for (int i = 0; i < s.length(); ++i) {
         completeCode += codes[s[i]];
