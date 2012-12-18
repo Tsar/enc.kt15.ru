@@ -12,10 +12,10 @@ $generators['LZW_AE']     = array('LZW by Андрей Еремеев (java)',  
 #                                                                   array('generators/lz78_Ioann_Volkov/lz78_v2.py'),          'python lz78_v2.py > output.txt');
 $generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
                                                                          'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
-$generators['Arith_KE']   = array('Арифметическое by Кирилл Елагин (python)', array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py arith');
-$generators['LZ77_KE']    = array('LZ77 by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py lz77');
-$generators['LZ78_KE']    = array('LZ78 by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py lz78');
-$generators['PPMA_KE']    = array('PPMA by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py ppma');
+$generators['Arith_KE']   = array('Арифметическое by Кирилл Елагин (python)', array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py arith > output.txt');
+$generators['LZ77_KE']    = array('LZ77 by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py lz77 > output.txt');
+$generators['LZ78_KE']    = array('LZ78 by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py lz78 > output.txt');
+$generators['PPMA_KE']    = array('PPMA by Кирилл Елагин (python)',           array('generators/all_Kirill_Elagin/compr.py'), 'python3 compr.py ppma > output.txt');
 
 foreach ($generators as $gen => $genArr) {
     foreach ($genArr[1] as $fName) {
