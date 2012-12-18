@@ -7,18 +7,20 @@ from decimal import Decimal
 from functools import reduce
 from math import ceil, log
 
+utf8stdout = open(1, 'w', encoding='utf-8', closefd=False)
+
 
 def arith(s):
-    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>', file=utf8stdout)
     total = Fraction(1)
     tau = defaultdict(lambda: 0)
     iii = 0
     for n,c in enumerate(s):
-        print('<tr class="' + ('odd' if iii % 2 == 0 else 'even') + '"><td>{0}</td><td>{1}</td><td>{2}</td><td>{3} / {4}</td></tr>'.format(n, c, tau[c], 2*tau[c]+1, 2*n+256))
+        print('<tr class="' + ('odd' if iii % 2 == 0 else 'even') + '"><td>{0}</td><td>{1}</td><td>{2}</td><td>{3} / {4}</td></tr>'.format(n, c, tau[c], 2*tau[c]+1, 2*n+256), file=utf8stdout)
         iii += 1
         total *= Fraction(2*tau[c]+1, 2*n+256)
         tau[c] += 1
-    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(ceil(-log(total, 2))+1))
+    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(ceil(-log(total, 2))+1), file=utf8stdout)
 
 
 ##############################################################
@@ -38,7 +40,7 @@ def binz(n, w):
     return '0'*(ceil(log(w,2))-len(b)) + b if w > 1 else ''
 
 def lz77(s):
-    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>', file=utf8stdout)
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     window = 0
     def find_closest(i):
@@ -65,7 +67,7 @@ def lz77(s):
                               l,
                               '{}({})'.format(d,window),
                               '1 ' + d_bin + ' ' + l_bin,
-                              tl))
+                              tl), file=utf8stdout)
             iii += 1
             window += l
             i += l
@@ -76,19 +78,19 @@ def lz77(s):
                               l,
                               '-',
                               '0 bin({})'.format(s[i]),
-                              tl))
+                              tl), file=utf8stdout)
             iii += 1
             window += 1
             i += 1
         total += tl
-    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(total))
+    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(total), file=utf8stdout)
 
 
 ##########################################################
 
 
 def lz78(s):
-    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>', file=utf8stdout)
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     dic = ['']
 
@@ -110,7 +112,7 @@ def lz78(s):
                               neww,
                               k,
                               c + ' bin({})'.format(s[i+len(dic[k])]),
-                              len(c)+8))
+                              len(c)+8), file=utf8stdout)
             iii += 1
             dic.append(s[i])
             k = len(dic)-1
@@ -123,21 +125,21 @@ def lz78(s):
                               neww,
                               k,
                               c,
-                              len(c)))
+                              len(c)), file=utf8stdout)
             iii += 1
             neww = dic[prevk] + dic[k][0]
             i += len(dic[k])
             total += len(c)
         if neww not in dic:
             dic.append(neww)
-    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(total))
+    print('<tr><td colspan="4"><center>Total bits: {}</center></td></tr>'.format(total), file=utf8stdout)
 
 
 ##########################################################################
 
 
 def ppma(s, D=5):
-    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>', file=utf8stdout)
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     letters_left = 256
 
@@ -191,24 +193,24 @@ def ppma(s, D=5):
         context = find_context(i)
         taus, p_escs, p_a = calc_numbers(i, context)
         if not context:
-            context = r'$\varnothing$'
+            context = '-'
         elif isinstance(context, bytes):
             context = ' '.join(map(hex, context))
         fr1 = fracs(p_escs)
-        if fr1:
-            fr1 = '$'+fr1+'$'
+        #if fr1:
+        #    fr1 = '$'+fr1+'$'
         fr2 = frac(p_a)
-        if fr2:
-            fr2 = '$'+fr2+'$'
+        #if fr2:
+        #    fr2 = '$'+fr2+'$'
         print(frmt.format('odd' if i % 2 == 0 else 'even',
-                          hex(letter),
+                          letter,
                           context,
                           ';'.join(map(str,taus)),
                           fr1,
-                          fr2))
+                          fr2), file=utf8stdout)
         i += 1
         total += sum(map(lambda p: Decimal.from_float(-log(p, 2)), p_escs + [p_a]))
-    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(ceil(total)+1))
+    print('<tr><td colspan="5"><center>Total bits: {}</center></td></tr>'.format(ceil(total)+1), file=utf8stdout)
 
 
 ##########################################################################
@@ -218,10 +220,10 @@ if __name__ == "__main__":
     assert(len(sys.argv) == 2)
 
     algo = sys.argv[1]
-    with open('input.txt', 'r') as f:
+    with open('input.txt', 'r', encoding="utf-8") as f:
         s = f.read()
 
-    print('<table id="infoTable">')
+    print('<table id="infoTable">', file=utf8stdout)
 
     if algo == "arith":
         arith(s)
@@ -232,4 +234,4 @@ if __name__ == "__main__":
     elif algo == "ppma":
         ppma(s)
 
-    print('</table>')
+    print('</table>', file=utf8stdout)
