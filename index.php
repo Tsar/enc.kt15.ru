@@ -114,7 +114,7 @@ if (isset($_POST['inputText'])) {
 
 <ul id="lineTabs2">
     <li><a href="index.php?result=<?php echo htmlentities($_GET['result']); ?>" class="active">Результат</a></li>
-    <li><a href="index.php">Генератор</a></li>
+    <li><a href="index.php">Генераторы</a></li>
 </ul>
 
 <div id="content">
@@ -139,7 +139,7 @@ if (isset($_POST['inputText'])) {
 ?>
 
 <ul id="lineTabs1">
-    <li><a href="index.php" class="active">Генератор</a></li>
+    <li><a href="index.php" class="active">Генераторы</a></li>
 </ul>
 
 <div id="content">
@@ -170,6 +170,7 @@ if (isset($_POST['inputText'])) {
     }
 ?>
 
+<p align="center"><font size=2><i>Исходники этого сайта:</i> <a href="https://github.com/Tsar/enc.kt15.ru" target=_blank>https://github.com/Tsar/enc.kt15.ru</a></font></p>
 </div>
 
 </body>
