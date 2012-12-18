@@ -1,5 +1,4 @@
 #!/usr/bin/env python3.2
-# -*- coding: utf8 -*-
 
 import sys
 from collections import defaultdict
@@ -10,7 +9,7 @@ from math import ceil, log
 
 
 def arith(s):
-    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>')
     total = Fraction(1)
     tau = defaultdict(lambda: 0)
     iii = 0
@@ -39,7 +38,7 @@ def binz(n, w):
     return '0'*(ceil(log(w,2))-len(b)) + b if w > 1 else ''
 
 def lz77(s):
-    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th><th>п5</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>')
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     window = 0
     def find_closest(i):
@@ -89,7 +88,7 @@ def lz77(s):
 
 
 def lz78(s):
-    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th></tr>')
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     dic = ['']
 
@@ -138,7 +137,7 @@ def lz78(s):
 
 
 def ppma(s, D=5):
-    print('<tr><th>п1</th><th>п2</th><th>п3</th><th>п4</th><th>п5</th></tr>')
+    print('<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>')
     frmt = '<tr class="{}"><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'
     letters_left = 256
 
