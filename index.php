@@ -6,9 +6,9 @@
 $generators['Haffman_IV'] = array('Хаффман by Иоанн Волков (C++)', array('generators/haffman_Ioann_Volkov/haffman'),          'chmod +x haffman && ./haffman > output.txt');
 $generators['LZW_AE']     = array('LZW by Андрей Еремеев (java)',  array('generators/lzw_Andrei_Eremeev/LZW_Launcher.class',
                                                                          'generators/lzw_Andrei_Eremeev/LZW.class'),          'java LZW_Launcher');
-$generators['LZ78_IV']    = array('LZ78 by Иоанн Волков [изначально пустой словарь] (python)',
+$generators['LZ78_v1_IV'] = array('LZ78 by Иоанн Волков [изначально пустой словарь] (python)',
                                                                    array('generators/lz78_Ioann_Volkov/lz78_v1.py'),          'python lz78_v1.py > output.txt');
-$generators['LZ78_IV']    = array('LZ78 by Иоанн Волков [изначально словарь содержит весь алфавит] (python)',
+$generators['LZ78_v2_IV'] = array('LZ78 by Иоанн Волков [изначально словарь содержит весь алфавит] (python)',
                                                                    array('generators/lz78_Ioann_Volkov/lz78_v2.py'),          'python lz78_v2.py > output.txt');
 $generators['PPMA_OM']    = array('PPMA by Олег Мамин (java)',     array('generators/ppma_Oleg_Mamin/PPMA_Launcher.class',
                                                                          'generators/ppma_Oleg_Mamin/PPMA_Oleg_Mamin.class'), 'java PPMA_Launcher');
