@@ -69,14 +69,12 @@ public class LZW {
 				} else {
 					++step;
 					int shift = map.get(tmp);
-					//int length = length(map.size());
 					System.out.println("String \'" + p + "\'; " + toBinaryString(shift, length(map.size())));
 					
 					out.println(makeRow(step, p, shift, toBinaryString(shift, length(map.size())), length(map.size())));
 					bits += length(map.size());
 					map.put(new String(p), map.size() + 1);
 					p = p.substring(tmp.length());
-					isCode = true;
 					if (!map.containsKey(p)) {
 						++step;
 						System.out.println("String \'" + p + "\'; " + toBinaryString(0, length(map.size())) + "bin(" + s.charAt(i) + ")");
@@ -85,6 +83,7 @@ public class LZW {
 						bits += length(map.size()) + 8;
 						map.put(new String(p), map.size() + 1);
 						p = "";
+						isCode = true;
 					}
 				}
 			}
