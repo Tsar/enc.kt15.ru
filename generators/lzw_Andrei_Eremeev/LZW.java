@@ -43,43 +43,40 @@ public class LZW {
 		try {
 			out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
 			out.println("<table id=\"infoTable\">");
-			out.println("<tr><th>Шаг</th><th>Слово</th><th>Номер слова</th><th>Код</th><th>Длина кода</th></tr>");
+			out.println("<tr><th>Шаг</th><th>Добавленное слово</th><th>Номер слова</th><th>Код</th><th>Длина кода</th></tr>");
 			
 			Map<String, Integer> map = new HashMap<String, Integer>();
 			String p = "";
 			int bits = 0;
 			int step = 0;
+			boolean isCode = true;
 			for (int i = 0; i < s.length(); ++i) {
 				p += s.charAt(i);
 				if (map.containsKey(p)) {
-					if (i == s.length() - 1) {
-						++step;
-						int shift = map.get(p);
-						System.out.println("String \'" + p + "\'; " + toBinaryString(shift, length(map.size())));
-						
-						out.println(makeRow(step, p, shift, toBinaryString(shift, length(map.size())), length(map.size())));
-						bits += length(map.size());
-					}
+					isCode = false;
 					continue;
 				}
 				String tmp = p.substring(0, p.length() - 1);
 				if (tmp.isEmpty()) {
 					++step;
-					System.out.println("String \'" + p + "\'; " + toBinaryString(0, length(map.size())) + " bin(" + s.charAt(i) + ")");
+					System.out.println("String \'" + p + "\'; " + toBinaryString(0, length(map.size())) + "bin(" + s.charAt(i) + ")");
 					
 					out.println(makeRow(step, p, 0, toBinaryString(0, length(map.size())) + "bin(" + s.charAt(i) + ")", length(map.size()) + 8));
 					bits += length(map.size()) + 8;
 					map.put(new String(p), map.size() + 1);
 					p = "";
+					isCode = true;
 				} else {
 					++step;
 					int shift = map.get(tmp);
+					//int length = length(map.size());
 					System.out.println("String \'" + p + "\'; " + toBinaryString(shift, length(map.size())));
 					
 					out.println(makeRow(step, p, shift, toBinaryString(shift, length(map.size())), length(map.size())));
 					bits += length(map.size());
 					map.put(new String(p), map.size() + 1);
 					p = p.substring(tmp.length());
+					isCode = true;
 					if (!map.containsKey(p)) {
 						++step;
 						System.out.println("String \'" + p + "\'; " + toBinaryString(0, length(map.size())) + "bin(" + s.charAt(i) + ")");
@@ -90,6 +87,14 @@ public class LZW {
 						p = "";
 					}
 				}
+			}
+			if (!isCode) {
+				++step;
+				int shift = map.get(p);
+				System.out.println("String \'-\'; " + toBinaryString(shift, length(map.size())));
+				
+				out.println(makeRow(step, "-", shift, toBinaryString(shift, length(map.size())), length(map.size())));
+				bits += length(map.size());
 			}
 			System.out.println(bits + " bits");
 			out.println("</table>");
@@ -114,6 +119,6 @@ public class LZW {
 	}
 	
 	private static int length(int n) {
-		return n == 0 ? 0 : (int) Math.ceil(Math.log(n) / Math.log(2));
+		return n == 0 ? 0 : 1 + (int) Math.floor(Math.log(n) / Math.log(2));
 	}
 }
